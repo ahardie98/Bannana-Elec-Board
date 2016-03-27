@@ -61,7 +61,7 @@ void loop()
     {
       // Fetching the data payload
       done = radio.read( joystick, sizeof(joystick) );
-     // if(joystic[1]
+      if(joystick[1] <=325 || joystick[1] >=332){
      // Serial.print("X = ");
      // Serial.print(joystick[0]);
      pulseWidth = joystick[1] + minPulse;
@@ -69,10 +69,10 @@ void loop()
      Serial.print(" Moving servo to: ");      
      // Serial.println(joystick[1]);
      Serial.println(pulseWidth, DEC);
-     updateServo(); //update servo position
-    } 
-  } //updateServo() here; might need to make this an if statement instead of while loop
-  
+     
+    }updateServo(); //update servo position
+  } //End while 
+}
 }
 
 void updateServo() {
