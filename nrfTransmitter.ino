@@ -1,10 +1,5 @@
  /* You can used an Analog Joystick or 2 10K potentiometers */
  
-   GND - Arduino GND 
-   VCC - Arduino +5V
-   X Pot - Arduino A0
-   Y Pot - Arduino A1
- 
 /*----- Import all required Libraries -----*/
  
 #include <SPI.h>
