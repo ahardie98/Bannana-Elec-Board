@@ -1,74 +1,3 @@
-
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43
-44
-45
-46
-47
-48
-49
-50
-51
-52
-53
-54
-55
-56
-57
-58
-59
-/* Example: nRF24L01 */
- 
-   1 - GND 
-   2 - VCC 3.3V /* WARNING SHOULD BE 3.3v Not 5V */
-   3 - CE - Arduino pin 9
-   4 - CSN - Arduino pin 10
-   5 - SCK - Arduino pin 13
-   6 - MOSI - Arduino pin 11
-   7 - MISO - Arduino pin 12
-   8 - UNUSED 
- 
  /* You can used an Analog Joystick or 2 10K potentiometers */
  
    GND - Arduino GND 
@@ -111,8 +40,8 @@ void setup()
  
 void loop()   /* Runs Continuously */
 {
-  joystick[0] = analogRead(JOYSTICK_X); /* Reading Analog X
-  joystick[1] = analogRead(JOYSTICK_Y); /* Reading Analog Y
+//  joystick[0] = analogRead(JOYSTICK_X);  Reading Analog X
+  joystick[1] = analogRead(JOYSTICK_Y); // Reading Analog Y
   
   radio.write( joystick, sizeof(joystick) );
  
