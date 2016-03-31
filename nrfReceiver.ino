@@ -34,6 +34,7 @@ int pulseWidth = 0;
 long lastPulse = 0;    // the time in millisecs of the last pulse
 int refreshTime = 20;  // the time in millisecs needed in between pulses
 int minPulse = 700;   // minimum pulse width
+int prev;
 
 void setup()  
 {
@@ -53,6 +54,7 @@ void setup()
  
 void loop()   
 {
+  //int prev; // previous value
   if ( radio.available() )
   {
     // Reading the data payload until the RX received everything
@@ -60,26 +62,65 @@ void loop()
     while (!done)
     {
       // Fetching the data payload
+      prev = pulseWidth;    // Starts at 700
       done = radio.read( joystick, sizeof(joystick) );
-      if(joystick[1] <=325 || joystick[1] >=332){
-     // Serial.print("X = ");
-     // Serial.print(joystick[0]);
-     pulseWidth = joystick[1] + minPulse;
-      
-     Serial.print(" Moving servo to: ");      
-     // Serial.println(joystick[1]);
-     Serial.println(pulseWidth, DEC);
-     
-    }updateServo(); //update servo position
-  } //End while 
-}
-}
+
+      if(joystick[1] >=330)
+      {  
+        // If joystick is greater than center
+        pulseWidth = joystick[1] + minPulse;
+        //prev = pulseWidth; 
+           
+          if(pulseWidth < prev)        // 1200(pulseWidth) < 1300(prev)
+          {  
+             if(prev != pulseWidth)    // 1300(prev) != 1200(new value)
+             {       
+                prev--;   // decrement previous, until it equals the new value
+                Serial.println("Deccelerating."); // For testing
+                // Deccelerate
+              }
+           }
+        
+          else if(pulseWidth > prev)      // 1000 > 800
+          {  
+              if(prev != pulseWidth)      //800 != 1000
+              {  
+                  prev++; // increment previous until it equals the new value
+                  Serial.println("Accelerating."); 
+                 // updateServo();
+                  // Accelerate
+              }
+          }
+
+           else 
+           {
+                Serial.println("Values not changing");
+                // For when you are at a steady rate
+           }
+                         
+             
+          //updateServo();
+      } // End if()
+
+     else if (joystick[1] < 328){  //328
+        pulseWidth = joystick[1] + minPulse;
+      } //to make sure it stops at center and below, works but stops suddenly, also missing else
+    //  else
+    //  {
+       
+     //  }
+//Serial.println(prev); //
+      updateServo(); //update servo position, works here 
+    //  Serial.println(prev); doesnt stop!
+    } //End while ()
+  } // End if()
+} // End loop()
 
 void updateServo() {
   // pulse the servo again if rhe refresh time (20 ms) have passed:
   if (millis() - lastPulse >= refreshTime) {
     digitalWrite(servoPin, HIGH);   // Turn the motor on
-    delayMicroseconds(pulseWidth);  // Length of the pulse sets the motor position
+    delayMicroseconds(pulseWidth);        // Length of the pulse sets the motor position
     digitalWrite(servoPin, LOW);    // Turn the motor off
     lastPulse = millis();           // save the time of the last pulse
   }
