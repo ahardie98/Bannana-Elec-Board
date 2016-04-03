@@ -1,4 +1,4 @@
- /* 1 - GND 
+  /* 1 - GND 
    2 - VCC 3.3V 
    WARNING SHOULD BE 3.3v Not 5V 
    3 - CE - Arduino pin 9
@@ -64,11 +64,9 @@ void loop()
       // Fetching the data payload
       prev = pulseWidth;    // Starts at 700
       done = radio.read( joystick, sizeof(joystick) );
-
-      if(joystick[1] >=330)
-      {  
-        // If joystick is greater than center
-        pulseWidth = joystick[1] + minPulse;
+     
+      joystick[1] = map(joystick[1], 330, 669, 0, 669);
+      pulseWidth = joystick[1] + minPulse;
            
           if(pulseWidth < prev)        
           {  
@@ -93,24 +91,12 @@ void loop()
            else 
            {
                // Serial.println("Neither");
-                // Neither
+               // Neither
            }                       
-      } // End if()
-
-     else if (joystick[1] < 329) //1300 to 700
-      {  
-        pulseWidth = 700; //or ==
-        if(prev != pulseWidth)
-        {
-          prev--;
-          //Serial.println("Stopping"); 
-         // Serial.print(prev); 
-        //decrement previous until it is 700
-        //pulseWidth = 700; //Do not move
-        } //pulseWidth = 700;
-      } 
+    
       updateServo(); //update servo position, works here 
-      Serial.println(pulseWidth);
+      Serial.println(prev);
+     // Serial.println(joystick[1]); //see if joystick is mapping
     } //End while ()
   } // End if()
 } // End loop()
